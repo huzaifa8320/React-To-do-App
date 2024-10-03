@@ -10,7 +10,7 @@ function App() {
   const [todo_value, setTodo_Value] = useState('')
   const [loading, setLoading] = useState(true)
   const [alert_show, setAlert_Show] = useState('')
-  const [edit_show, setEdit_Show] = useState(false)
+  const [update_todo, setUpdate_Todo] = useState(null)
 
   const closeAlert = () => {
     setAlert_Show('')
@@ -35,7 +35,7 @@ function App() {
     if (todo_value) {
       const arr = [...todo]
       arr.push({
-        todo_text: todo_value
+        todo_text: todo_value,
       })
       setTodo(arr)
       setTodo_Value('')
@@ -60,7 +60,7 @@ function App() {
     console.log('Working', index);
     const arr = [...todo]
     arr[index] = {
-      todo_text: 'Hacker 😈'
+      todo_text: 'Hello',
     }
     setTodo(arr)
 
@@ -93,12 +93,9 @@ function App() {
 
             {todo.map((item, index) =>
               <div key={index} className='bg-cyan-600 my-5 rounded-lg h-14 px-4 text-white flex items-center font-semibold'>
-                {edit_show ?
-                <input type="text" placeholder='Edit Todo'/>:
                   <div>{index + 1}. {item.todo_text}</div>
-                }
                 <button className='ms-auto m-2 bg-white text-cyan-600 font-semibold  w-20 h-10 rounded-full' onClick={() => edit_todo(index)}>Edit</button>
-                <button className='bg-white text-cyan-600 font-semibold  w-20 h-10 rounded-full' onClick={() => delete_todo(index)}>Delete</button>
+                <button className={`bg-white text-cyan-600  font-semibold  w-20 h-10 rounded-full`} onClick={() => delete_todo(index)}>Delete</button>
               </div>
             )
             }
