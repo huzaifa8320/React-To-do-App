@@ -2,11 +2,19 @@ import { useEffect, useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCircleCheck, faXmark } from '@fortawesome/free-solid-svg-icons'
 
 function App() {
   const [todo, setTodo] = useState([])
   const [todo_value, setTodo_Value] = useState('')
   const [loading, setLoading] = useState(true)
+  const [alert_show, setAlert_Show] = useState('')
+  const [edit_show, setEdit_Show] = useState(false)
+
+  const closeAlert = () => {
+    setAlert_Show('')
+  }
 
   useEffect(() => {
     const storedTodos = JSON.parse(localStorage.getItem('todos')) || [];
@@ -26,8 +34,8 @@ function App() {
     setLoading(false)
     if (todo_value) {
       const arr = [...todo]
-      arr.push({ 
-        todo_text: todo_value 
+      arr.push({
+        todo_text: todo_value
       })
       setTodo(arr)
       setTodo_Value('')
@@ -37,15 +45,38 @@ function App() {
 
   const delete_todo = (index) => {
     setLoading(false)
-    console.log('h' , index);
+    console.log('h', index);
     const arr = [...todo]
-    arr.splice(index , 1)
+    arr.splice(index, 1)
     console.log(arr);
     setTodo(arr)
+    setAlert_Show('Delete Successfully')
+    setTimeout(() => {
+      setAlert_Show('')
+    }, 2000);
+  }
+
+  const edit_todo = (index) => {
+    console.log('Working', index);
+    const arr = [...todo]
+    arr[index] = {
+      todo_text: 'Hacker 😈'
+    }
+    setTodo(arr)
+
   }
 
   return (
-    <div className='text-white flex justify-center bg-cyan-600 border-4 items-center min-h-screen'>
+    <div className='text-white flex justify-center bg-cyan-600 items-center min-h-screen'>
+
+      {/* Custom Alert  */}
+      {alert_show &&
+        <div className="z-20 cursor-pointer alert shadow-2xl p-3 rounded-lg bg-[#C5F3D7] border-l-8 border-green-400 show fixed right-3 top-5">
+          <span className="text-green-600"><FontAwesomeIcon icon={faCircleCheck} /></span>
+          <span className="px-3 msg text-green-600 font-semibold">{alert_show}</span>
+          <span onClick={closeAlert} className="text-green-600"><FontAwesomeIcon icon={faXmark} /></span>
+        </div>
+      }
       <div className='bg-white py-3 text-black w-[480px] h-[500px] rounded-2xl px-5'>
         <h1 className='text-4xl font-semibold text-center text-cyan-600 my-6'>To-do list 🧾</h1>
         <div className='bg-cyan-600 text-white h-14 rounded-full flex px-4'>
@@ -57,17 +88,22 @@ function App() {
             onChange={(e) => setTodo_Value(e.target.value)} value={todo_value} className='bg-transparent outline-none font-semibold placeholder:text-white w-full' placeholder='Enter Todos' />
           <button className='bg-white text-cyan-600 font-semibold w-32 m-2 rounded-full' onClick={Add_todo}>Add-Todo</button>
         </div>
-        <div className='my-4 overflow-y-auto  h-[300px]'>
+        {todo.length > 0 ?
+          <div className='my-4 overflow-y-auto  h-[300px]'>
 
-          {todo.map((item, index) =>
+            {todo.map((item, index) =>
               <div key={index} className='bg-cyan-600 my-5 rounded-lg h-14 px-4 text-white flex items-center font-semibold'>
-                {index+1}. {item.todo_text}
-                <button className='ms-auto m-2 bg-white text-cyan-600 font-semibold  w-20 h-10 rounded-full'>Edit</button>
-                <button className='bg-white text-cyan-600 font-semibold  w-20 h-10 rounded-full' onClick={()=>delete_todo(index)}>Delete</button>
-                </div>
-          )
-          }
-        </div>
+                {edit_show ?
+                <input type="text" placeholder='Edit Todo'/>:
+                  <div>{index + 1}. {item.todo_text}</div>
+                }
+                <button className='ms-auto m-2 bg-white text-cyan-600 font-semibold  w-20 h-10 rounded-full' onClick={() => edit_todo(index)}>Edit</button>
+                <button className='bg-white text-cyan-600 font-semibold  w-20 h-10 rounded-full' onClick={() => delete_todo(index)}>Delete</button>
+              </div>
+            )
+            }
+          </div> : <p className='my-auto h-auto p-16 text-center font-semibold text-xl text-cyan-600'>No data 😕</p>
+        }
       </div>
     </div>
   )
