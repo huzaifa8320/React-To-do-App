@@ -10,7 +10,7 @@ function App() {
   const [todo_value, setTodo_Value] = useState('')
   const [loading, setLoading] = useState(true)
   const [alert_show, setAlert_Show] = useState('')
-  const [update_todo, setUpdate_Todo] = useState(null)
+  const [editindex, setEditIndex] = useState(null)
 
   const closeAlert = () => {
     setAlert_Show('')
@@ -59,12 +59,22 @@ function App() {
   const edit_todo = (index) => {
     console.log('Working', index);
     const arr = [...todo]
-    arr[index] = {
-      todo_text: 'Hello',
-    }
-    setTodo(arr)
-
+    setTodo_Value(arr[index].todo_text)
+    setEditIndex(index)
+    // arr[index] = {
+    //   todo_text: 'Hello',
+    // }
+    // setTodo(arr)
   }
+  const updateTodo = () => {
+    if (editindex !== null && todo_value) {
+      const arr = [...todo];
+      arr[editindex] = { todo_text: todo_value }
+      setTodo(arr)
+      setTodo_Value('');
+      setEditIndex(null);
+    }
+  };
 
   return (
     <div className='text-white flex justify-center bg-cyan-600 items-center min-h-screen'>
@@ -82,11 +92,11 @@ function App() {
         <div className='bg-cyan-600 text-white h-14 rounded-full flex px-4'>
           <input type="text" onKeyPress={(e) => {
             if (e.key === 'Enter') {
-              Add_todo()
+              editindex !== null ? updateTodo() : Add_todo();
             }
           }}
             onChange={(e) => setTodo_Value(e.target.value)} value={todo_value} className='bg-transparent outline-none font-semibold placeholder:text-white w-full' placeholder='Enter Todos' />
-          <button className='bg-white text-cyan-600 font-semibold w-32 m-2 rounded-full' onClick={Add_todo}>Add-Todo</button>
+          <button className='bg-white text-cyan-600 font-semibold w-auto px-3 m-2 rounded-full' onClick={editindex == null ? Add_todo : updateTodo}>{editindex == null ? 'Add╶Todo' : 'Update╶Todo'}</button>
         </div>
         {todo.length > 0 ?
           <div className='my-4 overflow-y-auto  h-[300px]'>
