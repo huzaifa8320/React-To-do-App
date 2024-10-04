@@ -26,7 +26,7 @@ function App() {
       console.log('Change');
       localStorage.setItem('todos', JSON.stringify(todo))
     }
-  }, [todo])
+  }, [todo , loading])
 
 
 
@@ -67,6 +67,7 @@ function App() {
     // setTodo(arr)
   }
   const updateTodo = () => {
+    setLoading(false)
     if (editindex !== null && todo_value) {
       const arr = [...todo];
       arr[editindex] = { todo_text: todo_value }
@@ -87,7 +88,7 @@ function App() {
           <span onClick={closeAlert} className="text-green-600"><FontAwesomeIcon icon={faXmark} /></span>
         </div>
       }
-      <div className='bg-white py-3 text-black w-[480px] h-[500px] rounded-2xl px-5'>
+      <div className='bg-white py-3 text-black w-[480px] border-2 max-[400px]:rounded-none max-[400px]:w-full max-[400px]:h-screen  border-red-950 h-[500px] rounded-2xl px-5'>
         <h1 className='text-4xl font-semibold text-center text-cyan-600 my-6'>To-do list 🧾</h1>
         <div className='bg-cyan-600 text-white h-14 rounded-full flex px-4'>
           <input type="text" onKeyPress={(e) => {
@@ -102,8 +103,8 @@ function App() {
           <div className='my-4 overflow-y-auto  h-[300px]'>
 
             {todo.map((item, index) =>
-              <div key={index} className='bg-cyan-600 my-5 rounded-lg h-14 px-4 text-white flex items-center font-semibold'>
-                  <div>{index + 1}. {item.todo_text}</div>
+              <div key={index} className='bg-cyan-600 my-5 rounded-lg h-14 max-[400px]:h-auto px-4 text-white max-[400px]:block flex items-center font-semibold'>
+                  <div className='max-[400px]:pt-3 break-words'>{index + 1}. {item.todo_text}</div>
                 <button className='ms-auto m-2 bg-white text-cyan-600 font-semibold  w-20 h-10 rounded-full' onClick={() => edit_todo(index)}>Edit</button>
                 <button className={`bg-white text-cyan-600  font-semibold  w-20 h-10 rounded-full`} onClick={() => delete_todo(index)}>Delete</button>
               </div>
