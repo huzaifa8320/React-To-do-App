@@ -19,3 +19,7 @@
       transform: translateX(0);
     }
   }
+
+  .word{
+    word-break: break-word;
+  }

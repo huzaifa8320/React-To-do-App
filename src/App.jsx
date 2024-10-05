@@ -40,6 +40,10 @@ function App() {
       setTodo(arr)
       setTodo_Value('')
       console.log(todo);
+      setAlert_Show('Add Successfully')
+      setTimeout(() => {
+        setAlert_Show('')
+      }, 2000);
     }
   };
 
@@ -74,6 +78,10 @@ function App() {
       setTodo(arr)
       setTodo_Value('');
       setEditIndex(null);
+      setAlert_Show('Edit Successfully')
+      setTimeout(() => {
+        setAlert_Show('')
+      }, 2000);
     }
   };
 
@@ -103,10 +111,10 @@ function App() {
           <div className='my-4 overflow-y-auto  h-[300px]'>
 
             {todo.map((item, index) =>
-              <div key={index} className='bg-cyan-600 my-5 rounded-lg h-14 max-[400px]:h-auto px-4 text-white max-[400px]:block flex items-center font-semibold'>
-                  <div className='max-[400px]:pt-3 break-words'>{index + 1}. {item.todo_text}</div>
-                <button className='ms-auto m-2 bg-white text-cyan-600 font-semibold  w-20 h-10 rounded-full' onClick={() => edit_todo(index)}>Edit</button>
-                <button className={`bg-white text-cyan-600  font-semibold  w-20 h-10 rounded-full`} onClick={() => delete_todo(index)}>Delete</button>
+              <div key={index} className='bg-cyan-600 py-1 mb-3 rounded-lg  max-[400px]:h-auto px-4 text-white max-[400px]:block flex items-cente font-semibold'>
+                  <div className='max-[400px]:pt-3 word flex items-center me-2'>{index + 1}. {item.todo_text}</div>
+                <button className='ms-auto m-2 bg-white text-cyan-600 font-semibold  min-w-20 h-10 rounded-full' onClick={() => edit_todo(index)}>Edit</button>
+                <button className={`bg-white m-2 text-cyan-600  font-semibold  min-w-20 h-10 rounded-full`} onClick={() => delete_todo(index)}>Delete</button>
               </div>
             )
             }
